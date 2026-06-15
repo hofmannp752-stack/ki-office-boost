@@ -29,7 +29,6 @@ except ImportError:
 # 0. INITIALISIERUNG & SECURE CLOUD CONFIG
 # ==========================================
 
-# Sicheres Laden der Keys aus den Streamlit Secrets (.streamlit/secrets.toml)
 SUPABASE_URL = st.secrets.get("SUPABASE_URL", "https://supabase.co")
 SUPABASE_KEY = st.secrets.get("SUPABASE_KEY", "EyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9iZ3RqaGxmdWJnb3ZobXRiZnZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1MTA0NzMsImV4cCI6MjA5NzA4NjQ3M30.yfBcjd-EhTednrCZv2__5iz_O8YdLRg_8uUDaNgRoUM")
 OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", "")
@@ -45,7 +44,6 @@ except Exception as e:
     st.error(f"Fehler bei der Verbindung zu Supabase: {e}")
     supabase = None
 
-# Session State initialisieren
 if "aktive_lizenz" not in st.session_state:
     st.session_state["aktive_lizenz"] = "Basis"
 if "aktuell_gewaehlte_id" not in st.session_state:
@@ -57,7 +55,6 @@ if "aktuell_gewaehlte_id" not in st.session_state:
 def parse_text_fallback_regex(text_content):
     """Sucht ohne KI mittels Mustern nach Rechnungsnummern und Beträgen"""
     amount = 0.0
-    # Suche nach Beträgen (z.B. betrag: 123,45)
     amounts = re.findall(r'(?:betrag|summe|gesamt|endbetrag)[:\s]*([\d\.,]+)', text_content, re.IGNORECASE)
     if amounts:
         try:
@@ -67,7 +64,6 @@ def parse_text_fallback_regex(text_content):
             pass
            
     if amount == 0.0:
-        # Fallback: Suche nach irgendwelchen typischen Dezimalzahlen (z.B. 45,90)
         all_decimals = re.findall(r'\b\d+,\d{2}\b', text_content)
         if all_decimals:
             try:
@@ -77,7 +73,6 @@ def parse_text_fallback_regex(text_content):
         else:
             amount = round(random.uniform(75.0, 950.0), 2)
 
-    # Suche nach Rechnungsnummern (z.B. RE-2024-01)
     invoice_no = f"KI-{random.randint(1000, 9999)}"
     inv_patterns = [
         r'(?:rechnungsnummer|rechnungsnr|rechnung\s*nr|inv-?no)[:\s]*([a-zA-Z0-9\-_]+)',
@@ -86,10 +81,7 @@ def parse_text_fallback_regex(text_content):
     for pattern in inv_patterns:
         matches = re.findall(pattern, text_content, re.IGNORECASE)
         if matches:
-            if isinstance(matches[0], tuple):
-                invoice_no = matches[0][0].strip()
-            else:
-                invoice_no = matches[0].strip()
+            invoice_no = matches[0].strip()
             break
 
     return {
@@ -245,4 +237,9 @@ with tab_dash:
             except Exception as extract_error:
                 lines.append(f"Inhalt konnte nicht vollständig parst werden: {extract_error}")
           
-            with st.spinner("Analysiere Belegdaten..."):
+            # GELÖST: st.spinner wurde entfernt, um jeden Einrückungsfehler an dieser Stelle komplett zu verhindern
+            ai_data = analyze_text_with_ai(full_text_for_ai if full_text_for_ai else office_file.name)
+           
+            abteilung = "Finance & Controlling" if ext == "xlsx" else ai_data.get("rechnungssteller", "Allgemeine Verwaltung")
+            betrag = ai_data.get("betrag", 0.0)
+            rechnungsnr = ai_data.get("rechnungsnummer", "KI-0000")
