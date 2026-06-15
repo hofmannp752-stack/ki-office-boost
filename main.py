@@ -113,7 +113,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Korrigierte Version von Zeile 116 ohne abgebrochenen Text
 st.markdown("<div class='main-title'>🛡️ KI Office Boost – HyperScale Cluster</div><br>", unsafe_allow_html=True)
 
 # Daten live aus der Supabase Cloud-Datenbank abrufen
