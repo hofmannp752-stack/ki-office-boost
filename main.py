@@ -113,6 +113,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Korrigierte Version von Zeile 116 ohne abgebrochenen Text
 st.markdown("<div class='main-title'>🛡️ KI Office Boost – HyperScale Cluster</div><br>", unsafe_allow_html=True)
 
 # Daten live aus der Supabase Cloud-Datenbank abrufen
@@ -196,7 +197,7 @@ with tab_dash:
                 st.markdown(pdf_display, unsafe_allow_html=True)
             else:
                 st.warning("PDF-Datei temporär nicht verfügbar.")
-        else:<a href="https://buy.stripe.com/8x26oA18e0TG4xb1udgEg0j" target="_blank" class="stripe-button" ...>
+        else:
             st.info("Wähle links einen Eintrag, um die Vorschau zu laden.")
 
 # ==========================================
@@ -231,7 +232,7 @@ with tab_abo:
                 <li><strong>Echtzeit-Währungsumrechnung:</strong> Fremdwährungen werden sekundengenau in EUR transformiert.</li>
                 <li><strong>90 Tage Cloud-Sicherung:</strong> Alle generierten PDFs werden für 90 Tage im verschlüsselten Storage archiviert.</li>
             </ul>
-            <a href="HIER_DEIN_ZWEITER_LINK" target="_blank" class="stripe-button" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">Jetzt Professional Scale buchen</a>
+            <a href="https://buy.stripe.com/14A9A07wCeGsg24dQR" target="_blank" class="stripe-button" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">Jetzt Professional Scale buchen</a>
         </div>
         """, unsafe_allow_html=True)
 
