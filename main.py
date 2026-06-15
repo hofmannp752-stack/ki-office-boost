@@ -196,7 +196,7 @@ with tab_dash:
                 st.markdown(pdf_display, unsafe_allow_html=True)
             else:
                 st.warning("PDF-Datei temporär nicht verfügbar.")
-        else:
+        else:<a href="https://buy.stripe.com/8x26oA18e0TG4xb1udgEg0j" target="_blank" class="stripe-button" ...>
             st.info("Wähle links einen Eintrag, um die Vorschau zu laden.")
 
 # ==========================================
